@@ -1,0 +1,220 @@
+-- CREACION PRIMER PROCEDIMIENTO PARA MOSTRAR DATOS DE LA TABLA RELACIONAL DE PRODUCTOS, CATEGORIAS Y MODELOS DE VEHICULOS
+DELIMITER //
+CREATE PROCEDURE proc_productoxcategoriaxmodelo (IN idcategoria INT, IN idmodelo INT)
+BEGIN
+SELECT * FROM productoxcategoriaxmodelo pcm 
+INNER JOIN productos p ON p.producto_id= pcm.rela_producto
+INNER JOIN categorias c ON c.prod_categoria_id = pcm.rela_prod_categoria
+INNER JOIN modelos_vehiculos m ON m.modelo_vehiculo_id = pcm.rela_modelo
+INNER JOIN producto_precio pp ON pp.rela_producto=p.producto_id
+WHERE pcm.estado=1
+AND pp.precio_fecha=(SELECT MAX(precio_fecha) FROM producto_precio) 
+AND c.prod_categoria_id=idcategoria 
+AND m.modelo_vehiculo_id=idmodelo;
+END //
+DELIMITER ;
+
+CALL proc_productoxcategoriaxmodelo(3,17);
+
+SHOW CREATE PROCEDURE actualizar;
+
+-- CREACION PRIMER TRIGGER AUTOPARTS_SYSTEM (Luego de insertar un nuevo producto se hace una insercion en la tabla 'producto_movimiento' y en la tabla 'producto_existencia_inicial')
+DELIMITER |
+
+CREATE TRIGGER trigger_insert_productos AFTER INSERT ON productos
+FOR EACH ROW BEGIN
+	INSERT INTO producto_movimiento
+	(`rela_producto`,`producto_movimiento_fecha`,`producto_movimiento_tipo_EgrIng`,`usuario`)
+	VALUES(new.producto_id,SYSDATE(),'INGRESO',USER());
+	INSERT INTO producto_existencia_inicial
+	(`rela_producto`,`texto_1`,`usuario`,`texto_2`,`cantidad_producto_inicial_unidad`,`fecha_existencia_inicial`)
+	VALUES(new.producto_id,'Producto añadido por:',USER(),'La cantidad inicial es:',new.producto_cantidad,SYSDATE());
+END |
+
+-- CREACION 2DO TRIGGER
+
+DELIMITER |
+CREATE TRIGGER trigger_delete_productos AFTER UPDATE ON productoxcategoriaxmodelo
+FOR EACH ROW BEGIN
+	INSERT INTO productos_movimientos
+	(`rela_producto`,`producto_movimiento_fecha`,`producto_movimiento_tipo_EgrIng`,`usuario`)
+	VALUES(old.rela_producto,SYSDATE(),'DADO DE BAJA',USER());
+END |
+
+DELIMITER |
+
+-------------------------.---------------.----------------.----------------
+
+COMPLETO QUERY 10-11-20
+-- CREACION PRIMER PROCEDIMIENTO PARA MOSTRAR DATOS DE LA TABLA RELACIONAL DE PRODUCTOS, CATEGORIAS Y MODELOS DE VEHICULOS
+DELIMITER //
+CREATE PROCEDURE proc_productoxcategoriaxmodelo (IN idcategoria INT, IN idmodelo INT)
+BEGIN
+	SELECT * FROM productoxcategoriaxmodelo pcm 
+	INNER JOIN productos p ON p.producto_id= pcm.rela_producto
+	INNER JOIN categorias c ON c.prod_categoria_id = pcm.rela_prod_categoria
+	INNER JOIN modelos_vehiculos m ON m.modelo_vehiculo_id = pcm.rela_modelo
+	INNER JOIN producto_detalles pd ON pd.`rela_producto`=p.`producto_id`
+	INNER JOIN (
+	    SELECT producto_precio.rela_producto, MAX(producto_precio.precio_fecha) AS Fecha
+	    FROM producto_precio
+	    GROUP BY producto_precio.rela_producto
+	) precios2 ON p.producto_id = precios2.`rela_producto`
+	INNER JOIN (
+	    SELECT producto_precio.`rela_producto`, producto_precio.`precio_venta`, producto_precio.precio_fecha
+	    FROM producto_precio
+	) producto_precio ON producto_precio.`precio_fecha` = precios2.Fecha 
+	AND producto_precio.rela_producto = precios2.rela_producto
+	WHERE pcm.estado=1 AND c.prod_categoria_id=idcategoria AND m.modelo_vehiculo_id=idmodelo;
+END //
+DELIMITER ;
+
+SELECT TOP 1 precios.Precio FROM precios WHERE precios.Idpro=p.IDpro ORDER BY fecha DESC
+
+CALL proc_productoxcategoriaxmodelo(3,17);
+
+SELECT * FROM productoxcategoriaxmodelo pcm 
+INNER JOIN productos p ON p.producto_id= pcm.rela_producto
+INNER JOIN categorias c ON c.prod_categoria_id = pcm.rela_prod_categoria
+INNER JOIN modelos_vehiculos m ON m.modelo_vehiculo_id = pcm.rela_modelo
+INNER JOIN producto_detalles pd ON pd.`rela_producto`=p.`producto_id`
+INNER JOIN (
+    SELECT producto_precio.rela_producto, MAX(producto_precio.precio_fecha) AS Fecha
+    FROM producto_precio
+    GROUP BY producto_precio.rela_producto
+) precios2 ON p.producto_id = precios2.`rela_producto`
+INNER JOIN (
+    SELECT producto_precio.`rela_producto`, producto_precio.`precio_venta`, producto_precio.precio_fecha
+    FROM producto_precio
+) producto_precio ON producto_precio.`precio_fecha` = precios2.Fecha 
+AND producto_precio.rela_producto = precios2.rela_producto
+WHERE pcm.estado=1
+
+SHOW CREATE PROCEDURE actualizar;
+
+-- CREACION PRIMER TRIGGER AUTOPARTS_SYSTEM (Luego de insertar un nuevo producto se hace una insercion en la tabla 'producto_movimiento' y en la tabla 'producto_existencia_inicial')
+DELIMITER |
+
+CREATE TRIGGER trigger_insert_productos AFTER INSERT ON productos
+FOR EACH ROW BEGIN
+	INSERT INTO producto_movimiento
+	(`rela_producto`,`producto_movimiento_fecha`,`producto_movimiento_tipo_EgrIng`,`usuario`)
+	VALUES(new.producto_id,SYSDATE(),'INGRESO',USER());
+	INSERT INTO producto_existencia_inicial
+	(`rela_producto`,`texto_1`,`usuario`,`texto_2`,`cantidad_producto_inicial_unidad`,`fecha_existencia_inicial`)
+	VALUES(new.producto_id,'Producto añadido por:',USER(),'La cantidad inicial es:',new.producto_cantidad,SYSDATE());
+END |
+
+DELIMITER |
+CREATE TRIGGER trigger_delete_productos AFTER UPDATE ON productoxcategoriaxmodelo
+FOR EACH ROW BEGIN
+	INSERT INTO producto_movimiento
+	(`rela_producto`,`producto_movimiento_fecha`,`producto_movimiento_tipo_EgrIng`,`usuario`)
+	VALUES(old.rela_producto,SYSDATE(),'DADO DE BAJA',USER());
+END |
+
+DELIMITER ;
+
+UPDATE productoxcategoriaxmodelo SET estado = 0 WHERE productoxcategoria_id = 3
+
+DELIMITER |
+CREATE TRIGGER trigger_update_productos AFTER UPDATE ON productos
+FOR EACH ROW BEGIN
+	INSERT INTO auditoria_productos
+	(`rela_producto`,`texto1`,`dato_antiguo`,`texto2`,`dato_nuevo`,`texto3`,`usuario`,`fecha_auditoria`)
+	VALUES
+	(old.producto_id,'El producto fue modificado:',old.producto_descripcion, 'por el siguiente:',new.producto_descripcion, 'por el usuario',USER(),SYSDATE()),
+	(old.producto_id,'El producto fue modificado:',old.producto_fecha_ingreso, 'por el siguiente:',new.producto_fecha_ingreso, 'por el usuario',USER(),SYSDATE()),
+	(old.producto_id,'El producto fue modificado:',old.producto_detalle_fabricante, 'por el siguiente:',new.producto_detalle_fabricante, 'por el usuario',USER(),SYSDATE());
+END |
+DELIMITER ;
+
+DELIMITER |
+CREATE TRIGGER trigger_update_detalles_productos AFTER UPDATE ON producto_detalles
+FOR EACH ROW BEGIN
+	INSERT INTO auditoria_productos
+	(`rela_producto`,`texto1`,`dato_antiguo`,`texto2`,`dato_nuevo`,`texto3`,`usuario`,`fecha_auditoria`)
+	VALUES
+	(old.rela_producto,'El producto fue modificado:',old.producto_detalle_descripcion, 'por el siguiente:',new.producto_detalle_descripcion, 'por el usuario',USER(),SYSDATE());
+END |
+DELIMITER ;
+
+DELIMITER |
+CREATE TRIGGER trigger_update_precio_productos AFTER UPDATE ON producto_precio
+FOR EACH ROW BEGIN
+	INSERT INTO auditoria_productos
+	(`rela_producto`,`texto1`,`dato_antiguo`,`texto2`,`dato_nuevo`,`texto3`,`usuario`,`fecha_auditoria`)
+	VALUES
+	(old.rela_producto,'El producto fue modificado:',old.precio_venta, 'por el siguiente:',new.precio_venta, 'por el usuario',USER(),SYSDATE()),
+	(old.rela_producto,'El producto fue modificado:',old.precio_fecha, 'por el siguiente:',new.precio_fecha, 'por el usuario',USER(),SYSDATE());
+END |
+DELIMITER ;
+
+SELECT * FROM productos INNER JOIN producto_detalles ON productos.`producto_id`= producto_detalles.`rela_producto` INNER JOIN productoxcategoriaxmodelo ON productos.`producto_id`= productoxcategoriaxmodelo.`rela_producto` WHERE productoxcategoriaxmodelo.`productoxcategoria_id`=1
+
+UPDATE productos SET producto_descripcion = 'PARABRISAS', producto_fecha_ingreso = '2020-10-18', producto_detalle_fabricante = 'ATMA' WHERE producto_id = 1
+
+UPDATE producto_detalles SET producto_detalle_descripcion = 'ECHO $SQL1; EXIT;' WHERE rela_producto = 1
+
+SELECT * FROM productos 
+INNER JOIN producto_precio ON productos.`producto_id`= producto_precio.`rela_producto` 
+INNER JOIN productoxcategoriaxmodelo ON productos.`producto_id`= productoxcategoriaxmodelo.`rela_producto` 
+WHERE productoxcategoriaxmodelo.`productoxcategoria_id`=1
+
+INSERT INTO productos(`producto_descripcion`,`producto_fecha_ingreso`,`producto_detalle_fabricante`,`producto_cantidad`) VALUES('PARABRISAS',CURDATE(),'PHILLIPS',1)
+
+`rela_producto`,`precio_fecha`,`precio_proveedor`,`precio_venta`
+
+`rela_producto`,`producto_detalle_descripcion`
+
+`productoxcategoriaxmodelo`
+`rela_producto`,`rela_prod_categoria`,`rela_modelo`,`cantidad_actual`,`estado`
+
+INSERT INTO producto_detalles (`rela_producto`,`producto_detalle_descripcion`) VALUES (7,VIDRIO TEMPLADO, ALTERNATIVO, COLOR OSCURO)
+
+
+INSERT INTO productoxcategoriaxmodelo(`rela_producto`,`rela_prod_categoria`,`rela_modelo`,`cantidad_actual`,`estado`) VALUES (10,,,2,1)
+
+ 26-11-20-> modulo PEDIDOS-listado
+vista de nombre del empleado 
+(explicacion -> https://es.stackoverflow.com/questions/36195/c%c3%b3mo-puedo-relacionar-correctamente-un-empleado-cliente-y-ventas?rq=1 <-)
+
+CREATE VIEW vw_empleado_nombre AS
+SELECT e.`empleado_id` AS idempleado,
+	CONCAT(pp.`apellidos_persona`,', ',`nombres_persona`) AS nombreEmpleado
+  FROM empleados e
+  JOIN personas_fisicas pp
+    ON pp.persona_fisica_id = e.`rela_persona_fisica`;
+
+vista de nombre del cliente (mismo procedimiento y explicación)
+
+CREATE VIEW vw_cliente_nombre AS
+SELECT c.`cliente_id` AS idcliente,
+	CONCAT(pp.`apellidos_persona`,', ',`nombres_persona`) AS nombreCliente
+  FROM clientes c
+  JOIN personas_fisicas pp
+    ON pp.persona_fisica_id = c.`rela_persona_fisica`;
+
+28-11-2020
+
+SELECT p.`pedido_id`, 
+    p.pedido_fecha,
+    p.pedido_subtotal,
+    p.pedido_descuento,
+    p.pedido_total,
+    SUM(dp.pedido_cantidad) AS cantidad,
+    dp.rela_producto,
+    pe.pedido_estado_descripcion,
+    c.`nombreCliente`,
+    e.`nombreEmpleado` FROM pedidos p
+INNER JOIN detalle_pedido dp ON p.`pedido_id`=dp.`rela_pedido`
+INNER JOIN pedidos_estados pe ON p.`rela_pedido_estado`=pe.`pedido_estado_id`
+INNER JOIN vw_cliente_nombre c ON c.`idcliente`=p.`rela_cliente`
+INNER JOIN vw_empleado_nombre e ON e.`idempleado`=p.`rela_empleado` 
+GROUP BY p.`pedido_id` 
+
+
+SELECT p.`pedido_id`, p.pedido_fecha, p.pedido_subtotal, p.pedido_descuento, p.pedido_total, 
+SUM(dp.pedido_cantidad) AS cantidad, dp.rela_producto, pe.pedido_estado_descripcion, c.`nombreCliente`, e.`nombreEmpleado` 
+FROM pedidos p INNER JOIN detalle_pedido dp ON p.`pedido_id`=dp.`rela_pedido` INNER JOIN pedidos_estados pe ON p.`rela_pedido_estado`=pe.`pedido_estado_id` INNER JOIN vw_cliente_nombre c 
+ON c.`idcliente`=p.`rela_cliente` INNER JOIN vw_empleado_nombre e ON e.`idempleado`=p.`rela_empleado`
