@@ -1,67 +1,117 @@
 $(document).ready(function(){
-    console.log('Jquery en pedidos JS');
-    listar();
+    console.log('Jquery en pedidos todos JS');
+    listartodos();
 
-    // pedidosList();
-    // function pedidosList(){
-    //     $.ajax({
-    //         url: 'lista.php',
-    //         type: 'GET',
-    //         success: function(response){
-    //             console.log(response)
-    //             let lista = JSON.parse(response);
-    //             console.log(lista);
-    //             // let template = '';
-
-    //             // if(lista.length !== 0){
-
-    //             //     lista.forEach(lista => {
-    //             //         template +=
-    //             //         `<tr clienteId="${lista.clienteId}">
-    //             //             <td>${lista.clienteId}</td>
-    //             //             <td>${lista.cliente}</td>
-    //             //             <td>${lista.cuil}</td>
-    //             //             <td>${lista.nro_cuenta}</td>
-    //             //             <td><button class="perfil btn btn-warning"><a id="perfil" href="" personaId="${lista.personaId}" style="color: black" >Ver Perfil</a></button></td>
-    //             //             <td>
-    //             //                 <button class="cliente-edit btn btn-warning" data-toggle="modal" data-target="#editarCliente" personaId="${lista.personaId}" ><i class="far fa-edit"></i></button>
-    //             //                 <button class="deleteCliente btn btn-danger"><i class="far fa-trash-alt"></i></button>
-    //             //             </td>                    
-    //             //         </tr>`
-    //             //     });
-    //             //     $("#listadoClientes").html(template);
-                    
-    //             // }else{
-    //             //     $("#listado-head").hide();
-    //             //     template = '¡No se han encontrado registros de clientes activos en la base de datos, agregue al menos uno!';
-    //             //     $(".card-body").html(template); 
-
-    //             // }
-                
-    //         }
-    //     });
-    // }
+    listarpendientes();
 
 })
 
-var listar = function(){
+var listartodos = function(){
     var table = $('#lista-pedidos-datatables').dataTable({
         "ajax":{
             "method":"POST",
-            "url":"lista.php"
+            "url":"todos/lista.php"
         },
         "columns":[
             {"data":"pedido_id"},
             {"data":"pedido_fecha"},
             {"data":"nombreCliente"},
             {"data":"nombreEmpleado"},
-            {"data":"cantidad"},
             {"data":"pedido_total"},
-            {"data":"pedido_estado_descripcion"},
-            {"data":""},
-            {"data":""},
-        ]
+            {"data":"pedido_estado_descripcion",
+                render: function(data, type, row){
+                    console.log('El contenido de data es : '+data);
+                    sev='';
+                    switch (data){
+                    case 'PENDIENTE':
+                        sev = '<span class="badge badge-warning badge-pill">'+data+'</span>';
+                        break;
+                    case 'ANULADO':
+                        sev = '<span class="badge badge-danger badge-pill">'+data+'</span>';
+                        break;
+                    case 'FINALIZADO':
+                        sev = '<span class="badge badge-success badge-pill">'+data+'</span>';
+                        break;
+                    case 'EN COLA':
+                        sev = '<span class="badge badge-primary badge-pill">'+data+'</span>';
+                        break;
+                    }
+                    console.log('Content of sev is : '+sev);
+                    return sev;
+                }
+            },
+            {"data":"pedido_id",
+                "fnCreatedCell": function(nTd, sData, oData, iRow, iCol){
+                    $(nTd).html("<a href='autoparts_system/modulos/pedidos/individuales/index.php?pedidoid="+oData.pedido_id+"'>Ver</a>")
+                }
+            },
+            {"defaultContent":"<button class='btn btn-warning'><i class='far fa-edit'></i></button> <button class='btn btn-danger'><i class='far fa-trash-alt'></i></button>"}
+        ],
+        "language":idioma_espaniol
     });
 }
 
+var listarpendientes = function(){
+    var table = $('#lista-pedidos-pendientes').dataTable({
+        "ajax":{
+            "method":"POST",
+            "url":"pendientes/listaPendientes.php"
+        },
+        "columns":[
+            {"datos":"pedido_id"},
+            {"datos":"pedido_fecha"},
+            {"datos":"nombreCliente"},
+            {"datos":"nombreEmpleado"},
+            {"datos":"pedido_total"},
+            {"datos":"pedido_estado_descripcion",
+                render: function(data, type, row){
+                    console.log('El contenido de data es : '+data);
+                    sev='';
+                    switch (data){
+                    case 'PENDIENTE':
+                        sev = '<span class="badge badge-warning badge-pill">'+data+'</span>';
+                        break;
+                    
+                    }
+                    // console.log('Content of sev is : '+sev);
+                    return sev;
+                }
+            },
+            {"datos":"pedido_id",
+                "fnCreatedCell": function(nTd, sData, oData, iRow, iCol){
+                    $(nTd).html("<a href='autoparts_system/modulos/pedidos/individuales/index.php?pedidoid="+oData.pedido_id+"'>Ver</a>")
+                }
+            },
+            {"defaultContent":"<button class='btn btn-warning'><i class='far fa-edit'></i></button> <button class='btn btn-danger'><i class='far fa-trash-alt'></i></button>"}
+        ],
+        "language":idioma_espaniol
+    });
+}
+
+var idioma_espaniol = {
+            "processing": "Procesando...",
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "zeroRecords": "No se encontraron resultados",
+            "emptyTable": "Ningún dato disponible en esta tabla",
+            "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "search": "Buscar:",
+            "infoThousands": ",",
+            "loadingRecords": "Cargando...",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+            "aria": {
+                "sortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sortDescending": ": Activar para ordenar la columna de manera descendente"
+            },
+            "buttons": {
+                "copy": "Copiar",
+                "colvis": "Visibilidad"
+            }
+        } 
 

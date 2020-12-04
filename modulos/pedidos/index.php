@@ -53,9 +53,11 @@
                         <div class="card-body">
                             <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <?php require 'todos1.php'?>
+                                <?php require 'todos/index.php';?>
                             </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Pendientes</div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <?php require 'pendientes/index.php';?>
+                            </div>
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Finalizados</div>
                             </div>
                             
