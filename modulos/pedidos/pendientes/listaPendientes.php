@@ -18,8 +18,6 @@
 
         $sql1="SELECT p.`pedido_id`, 
             p.pedido_fecha,
-            p.pedido_subtotal,
-            p.pedido_descuento,
             p.pedido_total, 
             pe.pedido_estado_descripcion,
             c.`nombreCliente`,
@@ -33,9 +31,9 @@
         // echo $sql1;
         // exit;
 
-        $rs_pedidos = $conexion->query($sql1) or die($conexion->error);   
+        $rs_pendientes = $conexion->query($sql1) or die($conexion->error);   
 
-        while($data = mysqli_fetch_assoc($rs_pedidos)){
+        while($data = mysqli_fetch_assoc($rs_pendientes)){
             $json["datos"][]= $data;
         }
         

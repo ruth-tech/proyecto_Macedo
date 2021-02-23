@@ -21,7 +21,7 @@
             </thead>
             <tbody id="listadodatosper">
 
-            </tbody>
+            </tbody> 
         </table>
 
     </div>

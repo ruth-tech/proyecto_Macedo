@@ -3,10 +3,10 @@ $(document).ready(function(){
     console.log('Jquery is working in perfiles juridicos');
     let personaid = $("#persoid").attr('personaid');
     console.log(personaid)
-    listadatosper();
+    listadatosjur();
     
 
-    function listadatosper(){
+    function listadatosjur(){
         $.ajax({
             url:"lista-juridica.php",
             type:"GET",

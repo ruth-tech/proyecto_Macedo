@@ -42,7 +42,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos</title>
     <?php require '../../../php/head_link.php'; ?>
+    <?php require '../../../php/head-datatables-link.php';?>
     <?php require '../../../php/head_script.php'; ?>
+    <?php require '../../../php/head-datatables-script.php';?>
     <!-- <link rel="stylesheet" href="\autoparts_system\css\marcas.css"> -->
     <script src="productos.js"></script>
    
@@ -81,13 +83,12 @@
                             <th>Fabricante</th>
                             <th>Detalles</th>
                             <th>Precio</th>
-                            <th>Informacion</th>
                             <th>ACCIONES</th>
                         </tr>
                     </thead>
-                    <tbody id="productoslista">
+                    <!-- <tbody id="productoslista">
 
-                    </tbody>
+                    </tbody> -->
 
                 </table>
             </div>
@@ -253,26 +254,7 @@
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal EDITAR -->
 
-            <!-- Modal info-Producto -->
-            <div class="modal fade" id="infoProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            ...
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- fin Modal info-Producto -->
+           
                                                            
 
             </div>

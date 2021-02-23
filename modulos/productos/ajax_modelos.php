@@ -1,27 +1,28 @@
 <?php
-require '../../php/conexion.php';
+require '../../php/conexion.php'; 
 
 
-$idvehiculo = $_POST['vehiculoid'];
+$idvehiculo = $_POST['marca'];
   
-$sql = "SELECT * FROM modelos_vehiculos"
-." WHERE `rela_vehiculo` = ". $idvehiculo
-." AND estado =1";
+$sql = "SELECT 
+    v.`vehiculo_id` AS vehiculoid,
+    mv.`modelo_vehiculo_id` AS id,
+    mv.`modelo_vehiculo_descripcion` AS vehiculo,
+    mv.`modelo_vehiculo_anio` AS anio"
+." FROM vehiculos v "
+." INNER JOIN modelos_vehiculos mv ON v.`vehiculo_id`=mv.`rela_vehiculo`"
+." WHERE mv.`estado`=1 AND v.`vehiculo_id`=".$idvehiculo;
 
 // echo $sql;
 // exit();
 
-$rs = mysqli_query($conexion, $sql);
+$rs =$conexion->query($sql) or die($conexion->error);
+
 
 $modelos = array();
 
-while($row = mysqli_fetch_array($rs)){
-    $modelos[]= array(
-        "vehiculo_id"=>$idvehiculo,
-        "id"=>$row['modelo_vehiculo_id'],
-        "modelo" => preg_replace('([^A-Za-z0-9 ])', '', $row['modelo_vehiculo_descripcion']),
-        "anio" => $row['modelo_vehiculo_anio']
-    );
+while($data = mysqli_fetch_assoc($rs)){
+    $modelos["data"][]= $data;
 } 
 $modelosjson = json_encode($modelos);
 // switch(json_last_error()) {

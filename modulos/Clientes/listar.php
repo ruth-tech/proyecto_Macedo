@@ -1,12 +1,12 @@
 <?php
 
-    include('../../../php/conexion.php');
+    include('../../php/conexion.php');
 
     session_start();
 
     // Si no existe la variable de sesión logueado, entonces el usuario debe loguearse.
     if (!isset($_SESSION["logueado"])) {
-        header("location: ../../../index.php?error=debe_loguearse");
+        header("location: ../../index.php?error=debe_loguearse");
         exit;
     }
 
@@ -14,9 +14,15 @@
     $rs = $conexion->query($sql) or die ($conexion->error);
     $json = array();
 
-    if($rs !== 0){
+    if($rs !== 0){ 
 
-        $sql1="SELECT * FROM clientes"
+        $sql1="SELECT 
+            personas.`persona_id` AS persona_id,
+            clientes.`cliente_id` AS id," 
+        ."  CONCAT(personas_fisicas.apellidos_persona,' ',nombres_persona) AS cliente, 
+            personas_fisicas.`persona_cuil` AS cuil, 
+            clientes.`cliente_nro_cuenta` AS cuenta"
+        ." FROM clientes"
         . " INNER JOIN personas_fisicas
         ON clientes.`rela_persona_fisica`=
         personas_fisicas.`persona_fisica_id`"
@@ -24,18 +30,15 @@
         personas_fisicas.`rela_persona`"
         . " WHERE clientes.`estado`=1 ";
 
+        // echo $sql1;
+        // exit;
+ 
         $rs = $conexion->query($sql1) or die($conexion->error);
 
         
 
-        while($row = mysqli_fetch_array($rs)){
-            $json[]= array(
-                'personaId' => $row['persona_id'],
-                'clienteId' => $row['cliente_id'],
-                'cliente' => $row['apellidos_persona'].", ".$row['nombres_persona'],
-                'cuil' => $row['persona_cuil'],
-                'nro_cuenta' => $row['cliente_nro_cuenta']
-            );
+        while($data = mysqli_fetch_assoc($rs)){
+            $json["data"][]= $data;
         }
         
         

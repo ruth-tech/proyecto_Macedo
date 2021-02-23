@@ -25,6 +25,8 @@
 
     <link rel="stylesheet" href="/autoparts_system/sw2/plugins/animate.css/animate.css">
 
+    <link rel="stylesheet" href="/autoparts_system/jquery-ui-1.12.1\jquery-ui.css">
+
 
 
    

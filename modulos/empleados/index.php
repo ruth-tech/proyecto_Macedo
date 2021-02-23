@@ -26,7 +26,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Empleados</title>
     <?php require '../../php/head_link.php'; ?>
+    <?php require '../../php/head-datatables-link.php';?>
     <?php require '../../php/head_script.php'; ?>
+    <?php require '../../php/head-datatables-script.php';?>
     <link rel="stylesheet" href="\autoparts_system\css\empleados.css">
     <script src="js/empleados.js"></script>
     
@@ -46,12 +48,13 @@
 
                 </div>
                 <h3>Empleados</h3>
-
+            </div>
                 <div class="card-body">
 
                     <table class="table table-striped " id="listado-empleados" >
                         <thead>
                             <tr>
+                                <td>ID</td>
                                 <td>DNI</td>
                                 <td>Nombre y Apellido</td>
                                 <td>Cargo</td>
@@ -60,14 +63,14 @@
                             </tr>
 
                         </thead>
-                        <tbody id="listadoEmpleados">
+                        <!-- <tbody id="listadoEmpleados">  -->
 
                         </tbody>
                     </table>
 
                 </div>
                 
-            </div>
+            
             <!-- Modal AGREGAR -->
             <div class="modal fade" id="nuevoEmpleado" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
                 <div class="modal-dialog">

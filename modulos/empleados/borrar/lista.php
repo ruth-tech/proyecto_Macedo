@@ -21,7 +21,7 @@
         . " INNER JOIN personas ON personas.`persona_id`= personas_fisicas.`rela_persona`"
         . " INNER JOIN usuarios ON usuarios.rela_persona = personas.persona_id"
         . " INNER JOIN perfiles ON perfiles.perfil_id = usuarios.rela_perfil"
-        . " WHERE empleados.`estado`=1 ";
+        . " WHERE empleados.`estado`=1 "; 
 
         $rs = $conexion->query($sql1) or die($conexion->error);
 

@@ -28,7 +28,7 @@
     <?php require '../../php/head_script.php'; ?>
     <link rel="stylesheet" href="\autoparts_system\css\marcas.css">
 
-    <script src="vehiculos.js"></script>
+    <!-- <script src="vehiculos.js"></script> -->
     <script src="\autoparts_system\js\jquery-redirect.js"></script>
 </head>
 <body>    
@@ -46,11 +46,11 @@
                     <div class="card-body">
                         <h5 class="card-title">Seleccione la marca del vehiculo solicitado:</h5>
                            
-                            <span data-toggle="tooltip" data-placement="top" title="ABARTH"><a id="1" href="" data-toggle="modal" data-target="#modeloVehiculo"><img class="marcasautos"src="/autoparts_system/img/marcas/abarth.jpg" alt="Autopartes: Abarth" width="100" height="100"></a></span>
+                            <span data-toggle="tooltip" data-placement="top" title="ABARTH"><a id="1" href="" ><img class="marcasautos"src="/autoparts_system/img/marcas/abarth.jpg" alt="Autopartes: Abarth" width="100" height="100"></a></span>
 
-                            <span data-toggle="tooltip" data-placement="top" title="ACURA"><a  id="60" href="" data-toggle="modal" data-target="#modeloVehiculo"><img class="marcasautos"src="/autoparts_system/img/marcas/acura.jpg" alt="Autopartes: Acura" width="100" height="100"></a></span>
+                            <span data-toggle="tooltip" data-placement="top" title="ACURA"><a  id="60" href="#"><img class="marcasautos"src="/autoparts_system/img/marcas/acura.jpg" alt="Autopartes: Acura" width="100" height="100"></a></span>
 
-                            <span data-toggle="tooltip" data-placement="top" title="ALFA ROMEO"><a  id="2" href="" data-toggle="modal" data-target="#modeloVehiculo"><img class="marcasautos"src="/autoparts_system/img/marcas/alfa_romeo.JPG" alt="Autopartes: Alfa Romeo" width="100" height="100"></a></span>
+                            <span data-toggle="tooltip" data-placement="top" title="ALFA ROMEO"><a  id="2" href="#" ><img class="marcasautos"src="/autoparts_system/img/marcas/alfa_romeo.JPG" alt="Autopartes: Alfa Romeo" width="100" height="100"></a></span>
 
                             <span data-toggle="tooltip" data-placement="top" title="ALPINA"><a  id="65" href="#"><img class="marcasautos"src="/autoparts_system/img/marcas/alpina.jpg" alt="Autopartes: Alpina" width="100" height="100"></a></span>    
 
@@ -213,105 +213,33 @@
                     </div>
                 </div>
                
-            <!-- MODAL MODELOS VEHICULOS -->
-
-            <div class="modal fade" id="modeloVehiculo" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-
-                        <div class="modal-body">
-                            <form role="form" method="post" id="modelos_vehiculos">
-                                <h3>Seleccione el modelo de vehiculo solicitado:</h3>
-                                <p class="text-danger float-right col-5"><small>*Tenga en cuenta el modelo y el año al momento de elegir.</small></p>
-                                <input type="hidden" id="vehiculoid"> 
-                                <p>
-                                    <div class="form-group">
-                                        <label>Modelo: </label>
-                                       <select name="modelos" id="modelos">
-                                           <option value="">--SELECCIONE--</option>
-                                       </select>                        
-                                    </div>                                    
-                                </p>  
-                                
-                                                                
-                                <button type="submit" class="btn btn-danger">Continuar</button>
-
-                            </form>
-                        </div> 
-
-                    </div><!-- /.modal-content -->
-                 </div><!--  /.modal-dialog -->
-            </div><!-- /.modal -->
-
-            <!-- Modal AGREGAR -->
-             <div class="modal fade" id="nuevaCategoria" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-
-                        <div class="modal-body">
-                            <form role="form" method="post" id="agregar">
-                                <h3>Ingrese la Nueva Categoria</h3>
-                                <p>
-                                    <div class="form-group">
-                                        <label>Descripcion: </label>
-                                        <input type="text" id="descripcion" style="text-transform:uppercase">                        
-                                    </div>                                    
-                                </p>    
-                                                                
-                                <button type="submit" class="btn btn-danger">Agregar</button>
-
-                            </form>
-                        </div> 
-
-                    </div><!-- /.modal-content -->
-                 </div><!--  /.modal-dialog -->
-            </div><!-- /.modal AGREGAR -->
-
             
 
-            <!-- Modal EDITAR-->
-            <div class="modal fade" id="editarCategoria" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-
-                        
-                        <div class="modal-body">
-                            <form role="form" method="post" id="editar-categoria">
-                            <strong><h3>Modificar Categoria </h3></strong>
-                                   
-                                <input type="hidden" id="categoriaidedit" >
-                                <p>
-                                <div class="form-group">
-                                <label>Descripcion:</label>
-                                    <input type="text" id="descripcionedit"></input>                                   
-                                </div>
-                                </p>
-                                                                
-                                <button type="submit" class="btn btn-danger">Actualizar</button>
-
-                            </form>
-                        </div>
-
-                    </div><!-- /.modal-content -->
-                </div><!-- - /.modal-dialog -->
-            </div><!--/.modal EDITAR -->
-
-
-        <!-- </div> -->
+            
 
 
         <?php require "../../php/footer.php"; ?>
     </div> 
+<script>
+     // clickear la marca solicitada
+    $(document).ready(function(){
+        $(document).on('click','.marcasautos', function(e){
+            e.preventDefault();
+            var href = '/autoparts_system/modulos/productos/modelos_vehiculos.php';
+            let element = $(this)[0].parentElement;
+            let marcaid = $(element).attr('id');
 
+            console.log(marcaid)
+            if(marcaid){
+                var direccion = href+'?marcaid='+marcaid;
+                window.open(direccion);
+            }
+
+            
+            
+        });
+    })
+</script>
     
 </body>
 </html>

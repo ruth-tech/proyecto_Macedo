@@ -11,7 +11,7 @@ $(document).ready(function(){
             url:"/autoparts_system/modulos/perfiles/lista.php",
             type:"GET",
             //datatype:"json",//SI DEFINO EL DATATYPE COMO JSON NO HACE FALTA PARSEARLO, PORQUE AJAX YA LO TOMA COMO JSON A LA RESPUESTA
-            data:{personaid:personaid},
+            data:{personaid},
             success: function(response){
                 console.log(response)
                 let lista = JSON.parse(response);                

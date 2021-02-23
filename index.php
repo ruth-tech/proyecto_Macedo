@@ -52,7 +52,7 @@ if (isset($_GET['error'])) {
                     <div class="myform form ">
                         <div class="logo mb-3">
                             <div class="col-md-12 text-center">
-                                <img src="img\red-user.png" alt="img-user" width="100px" height="100px">
+                                <img src="img\Logo.png" alt="img-user" width="300px" height="110px">
                             </div>
                         </div>
                         <form action="php/procesar_index.php" method="post" id="form" name="login"> 

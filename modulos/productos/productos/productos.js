@@ -4,51 +4,52 @@ $(document).ready(function(){
     let categoria = $('#categoria').attr('categoriaid');
     let modelo = $('#modelo').attr('modeloid');
     console.log(categoria+' - '+modelo);
-    productosList();
+    listarProductos();
+    // productosList();
 
-    function productosList(){
-        $.ajax({
-            url:'/autoparts_system/modulos/productos/productos/lista.php',
-            type:'POST',
-            data:{categoria,modelo}
-        }).done(function(response){
-            console.log(response)
-            let datos = JSON.parse(response);
-            let template = '';
+    // function productosList(){
+    //     $.ajax({
+    //         url:'/autoparts_system/modulos/productos/productos/lista.php',
+    //         type:'POST',
+    //         data:{categoria,modelo}
+    //     }).done(function(response){
+    //         console.log(response)
+    //         let datos = JSON.parse(response);
+    //         let template = '';
 
-            if(datos.length != 0){
+    //         if(datos.length != 0){
 
-                datos.forEach(datos =>{
-                    template +=
-                    `<tr productoxcategoria_id="${datos.id}">
-                        <td>${datos.id}</td>
-                        <td>${datos.descripcion}</td>
-                        <td>${datos.fabricante}</td>                        
-                        <td>${datos.detalles}</td>                        
-                        <td><span data-placement="top" title="Editar precio" data-toggle="tooltip"><button class="edit-precio text-dark" data-toggle="modal" data-target="#editarPrecio" style="border:none; background:none">${datos.precio}</button></span></td>                        
-                        <td>
-                            <span data-placement="top" title="Informacion de Producto" data-toggle="tooltip"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#productoInfo" categoria="${datos.categoria} modelo="${datos.modelo}">Ver más</button>
-                        </td> 
-                        <td>
-                            <span data-placement="top" title="Editar datos" data-toggle="tooltip"><button type="button" class=" edit-producto btn btn-warning" data-toggle="modal" data-target="#editarProducto"><i class="far fa-edit"></i></button>
-                            <span data-placement="top" title="Eliminar datos" data-toggle="tooltip"><button type="button" class="deleteProducto btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                        </td> 
+    //             datos.forEach(datos =>{
+    //                 template +=
+    //                 `<tr productoxcategoria_id="${datos.id}">
+    //                     <td>${datos.id}</td>
+    //                     <td>${datos.descripcion}</td>
+    //                     <td>${datos.fabricante}</td>                        
+    //                     <td>${datos.detalles}</td>                        
+    //                     <td><span data-placement="top" title="Editar precio" data-toggle="tooltip"><button class="edit-precio text-dark" data-toggle="modal" data-target="#editarPrecio" style="border:none; background:none">${datos.precio}</button></span></td>                        
+    //                     <td>
+    //                         <span data-placement="top" title="Informacion de Producto" data-toggle="tooltip"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#productoInfo" categoria="${datos.categoria} modelo="${datos.modelo}">Ver más</button>
+    //                     </td> 
+    //                     <td>
+    //                         <span data-placement="top" title="Editar datos" data-toggle="tooltip"><button type="button" class=" edit-producto btn btn-warning" data-toggle="modal" data-target="#editarProducto"><i class="far fa-edit"></i></button>
+    //                         <span data-placement="top" title="Eliminar datos" data-toggle="tooltip"><button type="button" class="deleteProducto btn btn-danger"><i class="far fa-trash-alt"></i></button>
+    //                     </td> 
                                          
-                    </tr>`
-                });
-                $("#productoslista").html(template);
-            }else{
-                $("#listado-productos").hide();
-                template = '¡No se han encontrado registros de productos activos del modelo de vehiculo en la categoria seleccionada en la base de datos, agregue al menos uno!';
-                $(".card-body-productos").html(template);
-            }
+    //                 </tr>`
+    //             });
+    //             $("#productoslista").html(template);
+    //         }else{
+    //             $("#listado-productos").hide();
+    //             template = '¡No se han encontrado registros de productos activos del modelo de vehiculo en la categoria seleccionada en la base de datos, agregue al menos uno!';
+    //             $(".card-body-productos").html(template);
+    //         }
 
-        }).fail(function(jqXHR, ajaxOptions, thrownError){
-            //en caso de que haya un error muestras un mensaje con el error
-            console.log(thrownError);
-          });
+    //     }).fail(function(jqXHR, ajaxOptions, thrownError){
+    //         //en caso de que haya un error muestras un mensaje con el error
+    //         console.log(thrownError);
+    //       });
 
-    }
+    // }
     //ELIMINAR
     $(document).on('click', '.deleteProducto', function(){
         
@@ -69,19 +70,19 @@ $(document).ready(function(){
               })
         ){
             
-            let element3 = $(this)[0].parentElement.parentElement.parentElement.parentElement;
-            let productoid =$(element3).attr('productoxcategoria_id')
+            let element3 = $(this)[0];
+            let productoid =$(element3).attr('productoId')
             console.log(productoid)
             
             $.post('producto-delete.php', {productoid}, function(response){
                 console.log(response);
                 Swal.fire(response);
                 
-                productosList();
+                listarProductos();
                 
             });
         }else{
-            productosList();
+            listarProductos();
         }
     });
 
@@ -110,7 +111,7 @@ $(document).ready(function(){
         }).done(function(response){
             console.log(response);
             Swal.fire(response);
-            productosList();
+            listarProductos();
             $('#agregar').trigger('reset');
         }).fail(function(jqXHR, ajaxOptions, thrownError){
             console.log(thrownError);
@@ -121,9 +122,9 @@ $(document).ready(function(){
 
 
     //Editar producto
-    $(document).on('click', '.edit-producto', function(){
-        let element3 = $(this)[0].parentElement.parentElement.parentElement;
-        let productoid =$(element3).attr('productoxcategoria_id')
+    $(document).on('click', '.producto-edit', function(){
+        let element3 = $(this)[0];
+        let productoid =$(element3).attr('productoId')
         console.log(productoid)
 
         $.post('producto-edit.php', {productoid}, function(response){
@@ -158,7 +159,7 @@ $(document).ready(function(){
                 success: function(response){
                     Swal.fire(response);
                     console.log(response);
-                    productosList();
+                    listarProductos();
                     
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -175,8 +176,8 @@ $(document).ready(function(){
     //editar precio
     $(document).on('click','.edit-precio',function(e){
         e.preventDefault();
-        let element3 = $(this)[0].parentElement.parentElement.parentElement;
-        let productoid =$(element3).attr('productoxcategoria_id')
+        let element3 = $(this)[0];
+        let productoid =$(element3).attr('productoId')
         console.log(productoid);
 
         $.post('precio-edit.php', {productoid}, function(response){
@@ -207,7 +208,7 @@ $(document).ready(function(){
                 success: function(response){
                     Swal.fire(response);
                     console.log(response);
-                    productosList();
+                    listarProductos();
                     
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -221,4 +222,60 @@ $(document).ready(function(){
 
     });
 
-})
+});
+
+var listarProductos = function(){
+    let categoria = $('#categoria').attr('categoriaid');
+    let modelo = $('#modelo').attr('modeloid');
+    var table = $('#listado-productos').dataTable({
+        "ajax":{
+            "method":"POST",
+            "url":"/autoparts_system/modulos/productos/productos/listar.php",
+            "data":{categoria,modelo}
+
+        },
+        "columns":[
+            {"data":"id"},
+            {"data":"producto"},
+            {"data":"fabricante"},
+            {"data":"detalles"},
+            {"data":"precio",
+                "fnCreatedCell": function(nTd, sData, oData, iRow, iCol){
+                    $(nTd).html("<span data-placement='top' title='Editar precio' data-toggle='tooltip'><button class='edit-precio text-dark' data-toggle='modal' data-target='#editarPrecio' style='border:none; background:none' productoId="+oData.id+">"+oData.precio+"</button></span>")
+                }
+            },
+            {"data":"id",
+                "fnCreatedCell":function(nTd, sData, oData, iRow,iCol){
+                    $(nTd).html("<span data-placement='top' title='Agregar a pedido' data-toggle='tooltip'><a class='carrito-add btn btn-info' href='/autoparts_system/modulos/pedidos/nuevo.php?productoId="+oData.id+"'><i class='fas fa-cart-arrow-down'></i></a></span><span data-placement='top' title='Editar' data-toggle='tooltip'><button class='producto-edit btn btn-warning' data-toggle='modal' data-target='#editarProducto' productoId="+oData.id+"><i class='far fa-edit'></i></button></span><span data-placement='top' title='Eliminar' data-toggle='tooltip'><button class='deleteProducto btn btn-danger' productoId="+oData.id+"><i class='far fa-trash-alt'></i></button></span>")
+                }
+            }
+        ],
+        "language":idioma_espaniol
+    });
+}
+var idioma_espaniol = {
+    "processing": "Procesando...",
+    "lengthMenu": "Mostrar _MENU_ registros",
+    "zeroRecords": "No se encontraron resultados",
+    "emptyTable": "Ningún dato disponible en esta tabla",
+    "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+    "search": "Buscar:",
+    "infoThousands": ",",
+    "loadingRecords": "Cargando...",
+    "paginate": {
+        "first": "Primero",
+        "last": "Último",
+        "next": "Siguiente",
+        "previous": "Anterior"
+    },
+    "aria": {
+        "sortAscending": ": Activar para ordenar la columna de manera ascendente",
+        "sortDescending": ": Activar para ordenar la columna de manera descendente"
+    },
+    "buttons": {
+        "copy": "Copiar",
+        "colvis": "Visibilidad"
+    }
+} 

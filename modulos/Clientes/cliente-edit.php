@@ -10,7 +10,6 @@
     }
 
     $clienteid = $_POST['clienteid'];
-    $personaid = $_POST['personaid'];
 
     $sql = "SELECT * FROM personas"
     . " INNER JOIN personas_fisicas ON personas.`persona_id`= personas_fisicas.`rela_persona`"
@@ -26,7 +25,7 @@
 
     while($row = mysqli_fetch_array($rs)){
       $json[] = array(
-       'personaid'=>$personaid,
+       'personaid'=>$row['persona_id'],
        'clienteid'=>$clienteid,
        
        'fechaAlta'=>$row['cliente_fecha_alta'],

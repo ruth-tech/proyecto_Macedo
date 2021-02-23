@@ -14,5 +14,7 @@
 <!-- acceso a sweet alert js -->
 <script src="/autoparts_system/sw2/plugins/sw2/sweetalert2.all.min.js"></script>
 
+<script src="/autoparts_system/jquery-ui-1.12.1\jquery-ui.js"></script>
+
 
   

@@ -22,8 +22,8 @@ if($rs_con !== 0){
     . " INNER JOIN personas_juridicas ON proveedores.`rela_persona_juridica`= personas_juridicas.`persona_juridica_id`"
     . " INNER JOIN personas ON personas.`persona_id`= personas_juridicas.`rela_persona`"
     . " WHERE proveedores.`estado`=1 ";
-    // echo $sql1;
-    // exit;
+    echo $sql1;
+    exit;
 
     $rs_per = $conexion->query($sql1) or die ($conexion->error);
 

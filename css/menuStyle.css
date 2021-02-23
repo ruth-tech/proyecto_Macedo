@@ -102,7 +102,7 @@ color:#ff0000;
   background: #000000;
   position: relative;
   width: 100%;
-  height:70px;
+  height:50px;
   z-index: 3; /*SIRVE PARA QUE EL MENU SE MUESTRE POR ENCIMA DE LOS ELEMENTOS SIGUIENTES*/
 }
 
@@ -140,7 +140,7 @@ color:#ff0000;
 .header .menu {
   clear: both;
   max-height: 0px;
-  font-size: 10px;
+  font-size: 5px;
   /* top:30px; */
   margin-top: 2px;
   transition: max-height .5s ease-out;
@@ -156,7 +156,7 @@ color:#ff0000;
   margin-top: 0;
 } */
 /* menu icon */
-.header .menu-icon {
+.header .menu-icon { 
   cursor: pointer;  
   float: right;
   padding: 42px 30px;

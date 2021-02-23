@@ -1,8 +1,8 @@
 
 
 <div class="card-body-todos text-danger">
-<table class="table table-striped table-responsive" id="lista-pedidos-datatables">
-    <thead class="thead-dark">
+<table class="table table-striped" id="lista-pedidos-datatables">
+    <thead>
         <tr>
             <th >ID</th>
             <th>Fecha</th>
