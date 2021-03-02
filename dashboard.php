@@ -2,7 +2,7 @@
   //  if(!isset($_SESSION)) 
   //  { 
        session_start(); 
-  //  }
+  // //  }
   
   // Si no existe la variable de sesión logueado, entonces el usuario debe loguearse.
   if (!isset($_SESSION["logueado"])) {
