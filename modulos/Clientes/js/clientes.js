@@ -46,9 +46,10 @@ $(document).ready(function(){
                 
     //         }
     //     });
-    // }                                                                        
+    // }   
+    // ACCESO AL PERFIL                                                                     
     $(document).on('click', '.perfil', function () {
-        var href = '/autoparts_system/modulos/perfiles/index.php'; 
+        var hrefperfilpersonal = '/autoparts_system/modulos/perfiles/index.php'; 
         let element = $(this)[0];                                                                 
         let personaId = $(element).attr('personaid');
         // let element1 = $(this)[0].parentElement.parentElement;
@@ -59,7 +60,7 @@ $(document).ready(function(){
         // Check if any ID is aviable 
         if (personaId) {
             // Save the url and perform a page load
-            var direccion = href + '?personaId=' + personaId; 
+            var direccion = hrefperfilpersonal + '?personaId=' + personaId; 
             // + '&clienteId='+ clienteId;
             window.open(direccion);
             

@@ -44,14 +44,14 @@ $(document).ready(function(){
 
     // ACCESO AL PERFIL
     $(document).on('click', '.perfil', function () {
-        var href = '/autoparts_system/modulos/perfiles/index-juridica.php';
+        var hrefperfil = '/autoparts_system/modulos/perfiles/index-juridica.php';
         let element = $(this)[0];                                                                 
         let personaId = $(element).attr('personaid');
 
         // Check if any ID is aviable 
         if (personaId) {
             // Save the url and perform a page load
-            var direccion = href + '?personaId=' + personaId; 
+            var direccion = hrefperfil + '?personaId=' + personaId; 
             // + '&clienteId='+ clienteId;
             window.open(direccion);
             

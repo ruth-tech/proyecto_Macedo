@@ -2,6 +2,10 @@ $(document).ready(function(){
     console.log('Jquery en pedidos todos JS');
     listartodos();
 
+    $(function () {
+        $('[data-toggle="popover"]').popover({html:true})
+      })
+
     // listarpendientes(); 
 
 })

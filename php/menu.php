@@ -1,13 +1,12 @@
 <?php
-
-session_start();
+// session_start();
 
 
 // Si no existe la variable de sesión logueado, entonces el usuario debe loguearse.
-if (!isset($_SESSION["logueado"])) {
-	header("location: ../index.php?error=debe_loguearse");
-	exit;
-}
+// if (!isset($_SESSION["logueado"])) {
+// 	header("location: ../index.php?error=debe_loguearse");
+// 	exit;
+// }
 
 ?>
 <head> 

@@ -1,12 +1,11 @@
 <?php 
-
-    require '../../php/conexion.php';
+   require '../../php/conexion.php';
 
     session_start();
 
     // Si no existe la variable de sesión logueado, entonces el usuario debe loguearse.
     if (!isset($_SESSION["logueado"])) {
-        header("location: ../index.php?error=debe_loguearse");
+        header("location: ../../index.php?error=debe_loguearse");
         exit;
     }
 

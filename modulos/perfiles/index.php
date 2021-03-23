@@ -1,5 +1,15 @@
 <?php
 
+require '../../php/conexion.php';
+
+    session_start();
+
+    // Si no existe la variable de sesión logueado, entonces el usuario debe loguearse.
+    if (!isset($_SESSION["logueado"])) {
+        header("location: ../../index.php?error=debe_loguearse");
+        exit;
+    }
+
     $personaid = $_GET['personaId'];
 
    
@@ -9,7 +19,7 @@
 <link rel="stylesheet" href="/autoparts_system/css/perfil.css">
 <?php require '../../php/head_link.php';?>
 <?php require '../../php/head_script.php';?>
-<script src="\autoparts_system\js\perfiles.js"></script>
+<script src="/autoparts_system/js/perfiles.js"></script>
 
 
 
